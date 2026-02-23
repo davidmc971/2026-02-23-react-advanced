@@ -26,6 +26,11 @@ function App() {
     updateMovies();
   };
 
+  const handleResetMovies = () => {
+    dataHandler.resetMovies();
+    updateMovies();
+  };
+
   return (
     <>
       <h1>Movie List</h1>
@@ -44,6 +49,9 @@ function App() {
             <>
               <button type="button" onClick={handleAddNewMovie}>
                 Add New Movie
+              </button>
+              <button type="button" onClick={handleResetMovies}>
+                Reset Movies
               </button>
               <MovieList
                 movies={movies}

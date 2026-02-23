@@ -6,12 +6,21 @@ export type Movie = {
   isFavorite?: boolean;
 };
 
+const STORAGE_KEY = "movies";
+
 export class DataHandler {
   private movies: Movie[];
   private nextId: number;
 
   constructor() {
-    this.movies = defaultMovies.slice();
+    const storedMovies = localStorage.getItem(STORAGE_KEY);
+    if (storedMovies) {
+      this.movies = JSON.parse(storedMovies);
+    } else {
+      this.movies = defaultMovies.slice();
+      this.persist();
+    }
+
     const maxId = this.movies.reduce(
       // Callback
       (acc, movie) => Math.max(acc, parseInt(movie.id, 10)),
@@ -19,6 +28,15 @@ export class DataHandler {
       0,
     );
     this.nextId = maxId + 1;
+  }
+
+  persist() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.movies));
+  }
+
+  resetMovies() {
+    this.movies = defaultMovies.slice();
+    this.persist();
   }
 
   getMovies(): Movie[] {
@@ -30,6 +48,7 @@ export class DataHandler {
     if (indexToDelete !== -1) {
       this.movies.splice(indexToDelete, 1);
     }
+    this.persist();
   }
 
   addNewMovie(): void {
@@ -45,6 +64,7 @@ export class DataHandler {
     };
 
     this.movies.push(newMovie);
+    this.persist();
   }
 
   rateMovie(id: string, rating: number): void {
@@ -52,6 +72,7 @@ export class DataHandler {
     if (movie) {
       movie.rating = rating;
     }
+    this.persist();
   }
 
   updateMovie(movie: Movie): void {
@@ -59,6 +80,7 @@ export class DataHandler {
     if (indexToUpdate !== -1) {
       this.movies[indexToUpdate] = movie;
     }
+    this.persist();
   }
 
   toggleFavorite(id: string): void {
@@ -66,6 +88,7 @@ export class DataHandler {
     if (movie) {
       movie.isFavorite = !movie.isFavorite;
     }
+    this.persist();
   }
 }
 
