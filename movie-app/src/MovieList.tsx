@@ -40,6 +40,11 @@ export default function MovieList({
     setEditingMovieId(null);
   };
 
+  const handleToggleFavorite = (id: string) => {
+    dataHandler.toggleFavorite(id);
+    updateMovies();
+  };
+
   return (
     <ul>
       {movies.map((movie) => (
@@ -63,6 +68,12 @@ export default function MovieList({
                   onClick={() => setEditingMovieId(movie.id)}
                 >
                   Edit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleToggleFavorite(movie.id)}
+                >
+                  {movie.isFavorite ? "Unfavorite" : "Favorite"}
                 </button>
               </span>
             </>

@@ -3,6 +3,7 @@ export type Movie = {
   title: string;
   description: string;
   rating: number;
+  isFavorite?: boolean;
 };
 
 export class DataHandler {
@@ -40,6 +41,7 @@ export class DataHandler {
       title: `New Movie ${id}`,
       description: "New Movie Description",
       rating: 0,
+      isFavorite: false,
     };
 
     this.movies.push(newMovie);
@@ -56,6 +58,13 @@ export class DataHandler {
     const indexToUpdate = this.movies.findIndex((m) => m.id === movie.id);
     if (indexToUpdate !== -1) {
       this.movies[indexToUpdate] = movie;
+    }
+  }
+
+  toggleFavorite(id: string): void {
+    const movie = this.movies.find((movie) => movie.id === id);
+    if (movie) {
+      movie.isFavorite = !movie.isFavorite;
     }
   }
 }
