@@ -44,6 +44,13 @@ export class DataHandler {
 
     this.movies.push(newMovie);
   }
+
+  rateMovie(id: string, rating: number): void {
+    const movie = this.movies.find((movie) => movie.id === id);
+    if (movie) {
+      movie.rating = rating;
+    }
+  }
 }
 
 const defaultMovies: Movie[] = [

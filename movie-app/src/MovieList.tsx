@@ -16,6 +16,20 @@ export default function MovieList({
     updateMovies();
   };
 
+  const handleRate = (id: string) => {
+    const ratingInput = prompt("Enter a rating (1 - 10):");
+    if (ratingInput === null) return;
+
+    const rating = parseFloat(ratingInput);
+    if (Number.isNaN(rating) || rating < 1 || rating > 10) {
+      alert("Invalid rating!");
+      return;
+    }
+
+    dataHandler.rateMovie(id, rating);
+    updateMovies();
+  };
+
   return (
     <ul>
       {movies.map((movie) => (
@@ -26,6 +40,9 @@ export default function MovieList({
           <span>
             <button type="button" onClick={() => handleDelete(movie.id)}>
               Delete
+            </button>
+            <button type="button" onClick={() => handleRate(movie.id)}>
+              Rate
             </button>
           </span>
         </li>
