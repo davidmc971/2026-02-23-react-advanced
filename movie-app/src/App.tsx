@@ -1,7 +1,9 @@
 import { useState } from "react";
 import "./App.css";
+import styles from "./App.module.css";
 import { DataHandler, type Movie } from "./DataHandler";
 import MovieList from "./MovieList";
+import { Link, Route, Routes } from "react-router-dom";
 
 const dataHandler = new DataHandler();
 
@@ -27,14 +29,41 @@ function App() {
   return (
     <>
       <h1>Movie List</h1>
-      <button type="button" onClick={handleAddNewMovie}>
-        Add New Movie
-      </button>
-      <MovieList
-        movies={movies}
-        dataHandler={dataHandler}
-        updateMovies={updateMovies}
-      />
+      <ul className={styles.nav}>
+        <li>
+          <Link to="/">Movie List</Link>
+        </li>
+        <li>
+          <Link to="/favorites">Favorites</Link>
+        </li>
+      </ul>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <button type="button" onClick={handleAddNewMovie}>
+                Add New Movie
+              </button>
+              <MovieList
+                movies={movies}
+                dataHandler={dataHandler}
+                updateMovies={updateMovies}
+              />
+            </>
+          }
+        />
+        <Route
+          path="/favorites"
+          element={
+            <MovieList
+              movies={movies.filter((movie) => movie.isFavorite)}
+              dataHandler={dataHandler}
+              updateMovies={updateMovies}
+            />
+          }
+        />
+      </Routes>
     </>
   );
 }
