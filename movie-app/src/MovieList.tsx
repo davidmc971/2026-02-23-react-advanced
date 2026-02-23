@@ -1,4 +1,6 @@
+import { useState } from "react";
 import type { DataHandler, Movie } from "./DataHandler";
+import MovieItemEdit from "./MovieItemEdit";
 
 type MovieListProps = {
   movies: Movie[];
@@ -11,6 +13,8 @@ export default function MovieList({
   dataHandler,
   updateMovies,
 }: MovieListProps) {
+  const [editingMovieId, setEditingMovieId] = useState<string | null>(null);
+
   const handleDelete = (id: string) => {
     dataHandler.deleteMovie(id);
     updateMovies();
@@ -30,21 +34,39 @@ export default function MovieList({
     updateMovies();
   };
 
+  const handleUpdate = (movie: Movie) => {
+    dataHandler.updateMovie(movie);
+    updateMovies();
+    setEditingMovieId(null);
+  };
+
   return (
     <ul>
       {movies.map((movie) => (
         <li key={movie.id}>
-          <h2>{movie.title}</h2>
-          <p>{movie.description}</p>
-          <p>Rating: {movie.rating}</p>
-          <span>
-            <button type="button" onClick={() => handleDelete(movie.id)}>
-              Delete
-            </button>
-            <button type="button" onClick={() => handleRate(movie.id)}>
-              Rate
-            </button>
-          </span>
+          {movie.id === editingMovieId ? (
+            <MovieItemEdit movie={movie} onSave={handleUpdate} />
+          ) : (
+            <>
+              <h2>{movie.title}</h2>
+              <p>{movie.description}</p>
+              <p>Rating: {movie.rating}</p>
+              <span>
+                <button type="button" onClick={() => handleDelete(movie.id)}>
+                  Delete
+                </button>
+                <button type="button" onClick={() => handleRate(movie.id)}>
+                  Rate
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditingMovieId(movie.id)}
+                >
+                  Edit
+                </button>
+              </span>
+            </>
+          )}
         </li>
       ))}
     </ul>

@@ -51,6 +51,13 @@ export class DataHandler {
       movie.rating = rating;
     }
   }
+
+  updateMovie(movie: Movie): void {
+    const indexToUpdate = this.movies.findIndex((m) => m.id === movie.id);
+    if (indexToUpdate !== -1) {
+      this.movies[indexToUpdate] = movie;
+    }
+  }
 }
 
 const defaultMovies: Movie[] = [
