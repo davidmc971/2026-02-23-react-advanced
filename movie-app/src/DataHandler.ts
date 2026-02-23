@@ -7,9 +7,11 @@ export type Movie = {
 
 export class DataHandler {
   private movies: Movie[];
+  private nextId: number;
 
   constructor() {
     this.movies = defaultMovies.slice();
+    this.nextId = this.movies.length + 1;
   }
 
   getMovies(): Movie[] {
@@ -21,6 +23,20 @@ export class DataHandler {
     if (indexToDelete !== -1) {
       this.movies.splice(indexToDelete, 1);
     }
+  }
+
+  addNewMovie(): void {
+    const id = this.nextId.toString();
+    this.nextId++;
+
+    const newMovie: Movie = {
+      id,
+      title: `New Movie ${id}`,
+      description: "New Movie Description",
+      rating: 0,
+    };
+
+    this.movies.push(newMovie);
   }
 }
 

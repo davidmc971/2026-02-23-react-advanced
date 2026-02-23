@@ -19,9 +19,17 @@ function App() {
     setMovies(dataHandler.getMovies().slice());
   };
 
+  const handleAddNewMovie = () => {
+    dataHandler.addNewMovie();
+    updateMovies();
+  };
+
   return (
     <>
       <h1>Movie List</h1>
+      <button type="button" onClick={handleAddNewMovie}>
+        Add New Movie
+      </button>
       <MovieList
         movies={movies}
         dataHandler={dataHandler}
