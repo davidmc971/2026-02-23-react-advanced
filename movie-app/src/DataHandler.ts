@@ -11,7 +11,13 @@ export class DataHandler {
 
   constructor() {
     this.movies = defaultMovies.slice();
-    this.nextId = this.movies.length + 1;
+    const maxId = this.movies.reduce(
+      // Callback
+      (acc, movie) => Math.max(acc, parseInt(movie.id, 10)),
+      // Initialer Wert des Akkumulators
+      0,
+    );
+    this.nextId = maxId + 1;
   }
 
   getMovies(): Movie[] {
