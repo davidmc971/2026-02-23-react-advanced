@@ -15,6 +15,13 @@ export class DataHandler {
   getMovies(): Movie[] {
     return this.movies;
   }
+
+  deleteMovie(id: string): void {
+    const indexToDelete = this.movies.findIndex((movie) => movie.id === id);
+    if (indexToDelete !== -1) {
+      this.movies.splice(indexToDelete, 1);
+    }
+  }
 }
 
 const defaultMovies: Movie[] = [
