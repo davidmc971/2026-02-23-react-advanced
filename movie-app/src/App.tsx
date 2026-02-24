@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
 import "./App.css";
 import styles from "./App.module.css";
 import { DataHandler, type Movie } from "./DataHandler";
 import MovieList from "./MovieList";
-import { Link, Route, Routes } from "react-router-dom";
 
 const dataHandler = new DataHandler();
 
