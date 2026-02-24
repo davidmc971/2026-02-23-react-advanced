@@ -43,6 +43,48 @@ function App() {
     updateMovies();
   };
 
+  const handleFetchMovies = async () => {
+    const response = await fetch(
+      "https://api.themoviedb.org/3/discover/movie",
+      {
+        headers: {
+          // Der API-Schlüssel wird aus den Umgebungsvariablen geladen, wobei
+          // der Präfix VITE_ notwendig ist, damit Vite die Variable zur Laufzeit
+          // im Browser verfügbar macht. Vorsicht: Niemals geheime Schlüssel im
+          // Frontend-Code verwenden, sofern diese nicht öffentlich sein dürfen!
+          // Man kann diesen Schlüssel aus der Website extrahieren.
+          Authorization: `Bearer ${import.meta.env.VITE_MOVIEDB_API_KEY}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+    }
+
+    type TMDBMovie = {
+      id: number;
+      title: string;
+      overview: string;
+      vote_average: number;
+      genre_ids: number[];
+    };
+
+    const data: { results: TMDBMovie[] } = await response.json();
+
+    dataHandler.addMovies(
+      data.results.map((movie) => ({
+        id: movie.id.toString(),
+        title: movie.title,
+        description: movie.overview,
+        rating: movie.vote_average,
+        genreIds: movie.genre_ids,
+      })),
+    );
+
+    updateMovies();
+  };
+
   const handleResetMovies = () => {
     dataHandler.resetMovies();
     updateMovies();
@@ -69,6 +111,9 @@ function App() {
             <>
               <button type="button" onClick={handleAddNewMovie}>
                 Add New Movie
+              </button>
+              <button type="button" onClick={handleFetchMovies}>
+                Fetch Movies
               </button>
               <button type="button" onClick={handleResetMovies}>
                 Reset Movies

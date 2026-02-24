@@ -4,6 +4,7 @@ export type Movie = {
   description: string;
   rating: number;
   isFavorite?: boolean;
+  genreIds?: number[];
 };
 
 const STORAGE_KEY = "movies";
@@ -64,6 +65,14 @@ export class DataHandler {
     };
 
     this.movies.push(newMovie);
+    this.persist();
+  }
+
+  addMovies(movies: Movie[]): void {
+    if (!movies.length) return;
+    this.movies = this.movies.concat(
+      movies.filter((movie) => !this.movies.some((m) => m.id === movie.id)),
+    );
     this.persist();
   }
 
