@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import styles from "./App.module.css";
 import { DataHandler, type Movie } from "./DataHandler";
@@ -9,6 +9,17 @@ const dataHandler = new DataHandler();
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>(dataHandler.getMovies());
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    console.log("useEffect");
+
+    const intervalId = setInterval(() => {
+      setCounter((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const updateMovies = () => {
     // Wir nutzen die Methode slice() um eine Kopie des Arrays zu erstellen
@@ -33,6 +44,9 @@ function App() {
 
   return (
     <>
+      <div>
+        <p>Counter: {counter}</p>
+      </div>
       <h1>Movie List</h1>
       <ul className={styles.nav}>
         <li>
