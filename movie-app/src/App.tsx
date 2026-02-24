@@ -4,22 +4,28 @@ import "./App.css";
 import styles from "./App.module.css";
 import { DataHandler, type Movie } from "./DataHandler";
 import MovieList from "./MovieList";
+import { useDispatch, useSelector } from "react-redux";
+import { increment, selectCount } from "./redux/slices/counterSlice";
+// import { counterSlice } from "./redux/slices/counterSlice";
 
 const dataHandler = new DataHandler();
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>(dataHandler.getMovies());
-  const [counter, setCounter] = useState(0);
+  const counter = useSelector(selectCount);
+  const dispatch = useDispatch();
+  // const counter = useSelector(counterSlice.selectors.selectCount);
 
   useEffect(() => {
     console.log("useEffect");
 
     const intervalId = setInterval(() => {
-      setCounter((prev) => prev + 1);
+      dispatch(increment());
+      // dispatch(counterSlice.actions.increment());
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [dispatch]);
 
   const updateMovies = () => {
     // Wir nutzen die Methode slice() um eine Kopie des Arrays zu erstellen
